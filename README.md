@@ -1,4 +1,4 @@
-[![CI](https://github.com/FeedokTV/go-platform-template/actions/workflows/ci.yml/badge.svg)](https://github.com/FeedokTV/go-platform-template/actions/workflows/ci.yaml)
+[![CI](https://github.com)](https://github.com/FeedokTV/go-platform-template/actions/workflows/ci.yaml)
 
 # Go Platform Template
 
