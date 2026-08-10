@@ -1,4 +1,5 @@
 [![CI](https://github.com/FeedokTV/go-platform-template/actions/workflows/ci.yaml/badge.svg)](https://github.com/FeedokTV/go-platform-template/actions/workflows/ci.yaml)
+[![Release](https://img.shields.io/github/v/release/FeedokTV/go-platform-template)](https://github.com/FeedokTV/go-platform-template/releases)
 
 # Go Platform Template
 
