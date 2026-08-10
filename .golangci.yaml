@@ -1,0 +1,21 @@
+version: "2"
+linters:
+  default: standard
+  enable:
+    - depguard # forbids core importing transport/driver
+    - errorlint # broken error wrapping: fmt.Errorf without %w, err == comparisons
+    - sqlclosecheck # unclosed rows/statements -> connection leaks
+    - rowserrcheck # unchecked rows.Err() -> silently truncated result sets
+    - gosec # security static analysis
+    - noctx # HTTP/DB calls without context
+  settings:
+    depguard:
+      rules:
+        no-frameworks-in-core: # Core shouldn't know anything about actual realisations
+          files:
+            - "**/internal/core/**"
+          deny:
+            - pkg: "github.com/jackc/pgx"
+              desc: "core must not import the DB driver; translate at the adapter"
+            - pkg: "net/http"
+              desc: "core must not know transport"

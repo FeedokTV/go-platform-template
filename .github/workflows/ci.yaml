@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches:
+        - main
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Install golangci-lint
+        uses: golangci/golangci-lint-action@v7
+        with:
+          version: v2.12.2
+    
+  unit-test:
+    name: Unit-Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+    
+      - name: Install Dependencies
+        run: go mod download
+
+      - name: Run tests
+        run: go test -short -race ./...
+
+  integration-test:
+    name: Integration-Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+    
+      - name: Install Dependencies
+        run: go mod download
+
+      - name: Run tests
+        run: go test ./...
+    
+  vuln-check:
+    name: Vuln-check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - id: govulncheck
+        uses: golang/govulncheck-action@v1
+        with:
+          go-version-file: 'go.mod'
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run build
+        run: | 
+            docker build -f deploy/Dockerfile \
+            --build-arg VERSION=ci \
+            --build-arg COMMIT=ci \
+            --build-arg DATE=ci \
+            -t go-platform-template:ci .
